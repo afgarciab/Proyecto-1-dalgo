@@ -30,7 +30,7 @@ public class Proyecto1 {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
+		
 		contenedor=new Hashtable<Portales, Portales>();
 		energia = new Hashtable<Integer, Integer>();
 		
@@ -39,6 +39,7 @@ public class Proyecto1 {
 			InputStreamReader is= new InputStreamReader(System.in);
 			BufferedReader br = new BufferedReader(is);
 		) { 
+			System.out.println("aqui llegue");
 			String line = br.readLine();
 			int casos = Integer.parseInt(line);
 			line = br.readLine();
@@ -89,9 +90,11 @@ public class Proyecto1 {
 		 cuartos = Integer.parseInt(T[1]);//numero de cuartos
 		int portales = Integer.parseInt(T[2]);//numero de portales
 		int aproxInfinito = pisos*cuartos*portales*sumaEnergias;
-		for (int i =1;i<=pisos;i++)
+		torre=new int[pisos][cuartos];
+		
+		for (int i=0;i<pisos;i++)
 		{
-			for (int j=1;j<=cuartos;j++)
+			for (int j=0;j<cuartos;j++)
 			{
 				torre[i][j]=aproxInfinito;
 				if(i==1&&j==1)
@@ -112,8 +115,8 @@ public class Proyecto1 {
 		{
 			String[] posicionesPortales = x.split(" ");
 			int[] numeros = Arrays.stream(posicionesPortales).mapToInt(f->Integer.parseInt(f)).toArray();
-			Portales portalEntrada = new Portales(numeros[0],numeros[1]);
-			Portales portalSalida = new Portales(numeros[2],numeros[3]);
+			Portales portalEntrada = new Portales(numeros[0]-1,numeros[1]-1);
+			Portales portalSalida = new Portales(numeros[2]-1,numeros[3]-1);
 			contenedor.put(portalEntrada, portalSalida);
 		} 
 	}
@@ -123,9 +126,9 @@ public class Proyecto1 {
 	 */
 	public void inicializarTablaCostosEnergia(int[] E)
 	{
-		for (int i=1; i<=E.length;i++) {
-		energia.put(i, E[i-1]);
-		sumaEnergias+=E[i-1];
+		for (int i=0; i<E.length;i++) {
+		energia.put(i, E[i]);
+		sumaEnergias+=E[i];
 		}
 	}
 
@@ -135,27 +138,25 @@ public class Proyecto1 {
 	 */
 	public int calcularComplejidad(  )
 	{
-		for (int i =1; i<=pisos;i++)
+		for (int i =0; i<pisos;i++)
 		{
-			for (int j=1; j<=cuartos;j++)
+			for (int j=0; j<cuartos;j++)
 			{
-				if(i==1&&j==1)
+				if(i==0&&j==0)
 				{
 					torre[i][j]=0; //si estamos al inicio
 				}
 				else {
+					try {
 					Portales portalEnd= contenedor.get(portales.getPortal(i,j));
-					if(portalEnd!=null)
-					{
-						torre[portalEnd.getX()][portalEnd.getY()]=torre[i][j]; //si torre[i][j] es un portal de inicio
-					}
-					else 
-					{
-						if(j==1) //en la esquina de la izquieda
+					torre[portalEnd.getX()][portalEnd.getY()]=torre[i][j]; //si torre[i][j] es un portal de inicio
+					}catch(Exception e) {
+					
+						if(j==0) //en la esquina de la izquieda
 						{
 							torre[i][j+1]=Integer.min(torre[i][j]+energia.get(i), torre[i][j+1]);
 						}
-						else if(j==cuartos) //en la esquina de la derecha
+						else if(j==cuartos-1) //en la esquina de la derecha
 						{
 							torre[i][j-1]=Integer.min(torre[i][j]+energia.get(i), torre[i][j-1]);
 						}
@@ -167,8 +168,9 @@ public class Proyecto1 {
 				}
 				
 			}
+			
 		}		
-		return torre[pisos][cuartos];
+		return torre[pisos-1][cuartos-1];
 	}
 
 }
