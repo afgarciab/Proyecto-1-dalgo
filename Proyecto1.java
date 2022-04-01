@@ -41,7 +41,7 @@ public class Proyecto1 {
 				/* {N,M,P} Un arreglo con los numero necesarios para construir la torre */
 				final String [] torre = line.split(" ");
 				/* P es necesario para saber cuantos portales hay y usarla despues.
-				 * Es una herramienta sorpresa que nos ayudara mas tarde*/
+				 * Es una herramienta sorpresa que nos ayudara mas tarde */
 				int p = Integer.parseInt(torre[2]);
 				
 				
