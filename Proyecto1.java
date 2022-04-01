@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Hashtable;
 
@@ -21,10 +23,49 @@ public class Proyecto1 {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		contenedor=new Hashtable<Portales, Portales>();
 		energia = new Hashtable();
+		
+		Proyecto1 instancia = new Proyecto1();
+		try ( 
+			InputStreamReader is= new InputStreamReader(System.in);
+			BufferedReader br = new BufferedReader(is);
+		) { 
+			String line = br.readLine();
+			int casos = Integer.parseInt(line);
+			line = br.readLine();
+			for(int i=0;i<casos && line!=null && line.length()>0 && !"0".equals(line);i++) {
+				
+				/* {N,M,P} Un arreglo con los numero necesarios para construir la torre */
+				final String [] torre = line.split(" ");
+				/* P es necesario para saber cuantos portales hay y usarla despues.
+				 * Es una herramienta sorpresa que nos ayudara mas tarde*/
+				int p = Integer.parseInt(torre[2]);
+				
+				
+				line = br.readLine();
+				String [] datos = line.split(" ");
+				/* {N numeros} Un arreglo con el costo de energia de cada  piso */
+				final int[] energia = Arrays.stream(datos).mapToInt(f->Integer.parseInt(f)).toArray();
+				
+				/* {Xstart Ystart Xend Yend} Arreglo que indica el comportamiento de los portales*/
+				String [] portales = new String [p];
+				int j=0;
+				while(j < p) {
+					line = br.readLine();
+					portales[j] = line;
+					j++;
+				}
+				instancia.inicializarTablaCostosEnergia(energia);
+				instancia.inicializarPortales(portales);
+				instancia.inicializarTorre(torre);
+				int respuesta = instancia.calcularComplejidad();
+				System.out.println(respuesta);
+				line = br.readLine();
+			}			
+		}
 		
 		//debo hacer la carga de datos.
 		//luego se pone la funcion inicializarTablaCostosEnergia con su parametro.
@@ -39,8 +80,8 @@ public class Proyecto1 {
 	public void inicializarTorre(String[] T)
 	{
 		int pisos = Integer.parseInt(T[0]);//numero de pisos
-		int cuartos = Integer.parseInt(T[2]);//numero de cuartos
-		int portales = Integer.parseInt(T[0]);//numero de portales
+		int cuartos = Integer.parseInt(T[1]);//numero de cuartos
+		int portales = Integer.parseInt(T[2]);//numero de portales
 		int aproxInfinito = pisos*cuartos*portales*sumaEnergias;
 		for (int i =1;i<=pisos;i++)
 		{
@@ -63,7 +104,7 @@ public class Proyecto1 {
 	{
 		for (String x: PT)
 		{
-			String[] posicionesPortales = x.split(",");
+			String[] posicionesPortales = x.split(" ");
 			int[] numeros = Arrays.stream(posicionesPortales).mapToInt(f->Integer.parseInt(f)).toArray();
 			Portales portalEntrada = new Portales(numeros[0],numeros[1]);
 			Portales portalSalida = new Portales(numeros[2],numeros[3]);
@@ -77,8 +118,8 @@ public class Proyecto1 {
 	public void inicializarTablaCostosEnergia(int[] E)
 	{
 		for (int i=1; i<=E.length;i++) {
-		energia.put(i, E[i]);
-		sumaEnergias+=E[i];
+		energia.put(i, E[i-1]);
+		sumaEnergias+=E[i-1];
 		}
 	}
 
