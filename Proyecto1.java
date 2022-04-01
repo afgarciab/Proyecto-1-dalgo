@@ -74,11 +74,11 @@ public class Proyecto1 {
 	 * inicializa una tabla de hash con las energias de cada piso.
 	 * @param costoEnergia
 	 */
-	public void inicializarTablaCostosEnergia(int[] costoEnergia)
+	public void inicializarTablaCostosEnergia(int[] E)
 	{
-		for (int i=1; i<=costoEnergia.length;i++) {
-		energia.put(i, costoEnergia[i]);
-		sumaEnergias+=costoEnergia[i];
+		for (int i=1; i<=E.length;i++) {
+		energia.put(i, E[i]);
+		sumaEnergias+=E[i];
 		}
 	}
 
