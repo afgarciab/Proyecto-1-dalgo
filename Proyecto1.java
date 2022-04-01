@@ -8,16 +8,22 @@ import java.util.Hashtable;
  */
 
 /**
- * @author EQUIPO
+ * @author af.garciab
  *
  */
 public class Proyecto1 {
+	
+	private int pisos;
+	
+	private int cuartos;
 
 	private int[][] torre; 
 
 	private static Hashtable<Portales, Portales> contenedor;
 	
 	private static Hashtable<Integer, Integer> energia;
+	
+	private Portales portales;
 	
 	private int sumaEnergias;
 	/**
@@ -26,7 +32,7 @@ public class Proyecto1 {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		contenedor=new Hashtable<Portales, Portales>();
-		energia = new Hashtable();
+		energia = new Hashtable<Integer, Integer>();
 		
 		Proyecto1 instancia = new Proyecto1();
 		try ( 
@@ -59,7 +65,7 @@ public class Proyecto1 {
 					j++;
 				}
 				instancia.inicializarTablaCostosEnergia(energia);
-				instancia.inicializarPortales(portales);
+				instancia.inicializarTablaPortales(portales);
 				instancia.inicializarTorre(torre);
 				int respuesta = instancia.calcularComplejidad();
 				System.out.println(respuesta);
@@ -79,8 +85,8 @@ public class Proyecto1 {
 	 */
 	public void inicializarTorre(String[] T)
 	{
-		int pisos = Integer.parseInt(T[0]);//numero de pisos
-		int cuartos = Integer.parseInt(T[1]);//numero de cuartos
+		 pisos = Integer.parseInt(T[0]);//numero de pisos
+		 cuartos = Integer.parseInt(T[1]);//numero de cuartos
 		int portales = Integer.parseInt(T[2]);//numero de portales
 		int aproxInfinito = pisos*cuartos*portales*sumaEnergias;
 		for (int i =1;i<=pisos;i++)
@@ -100,7 +106,7 @@ public class Proyecto1 {
 	 * inicializa una tabla de hash con los portales
 	 * @param PT = matriz que contiene dentro un String que contiene la posicion inicial y final de cada portal.
 	 * */
-	public void inicializarPortales( String[] PT)
+	public void inicializarTablaPortales( String[] PT)
 	{
 		for (String x: PT)
 		{
@@ -129,7 +135,40 @@ public class Proyecto1 {
 	 */
 	public int calcularComplejidad(  )
 	{
-		return 0;
+		for (int i =1; i<=pisos;i++)
+		{
+			for (int j=1; j<=cuartos;j++)
+			{
+				if(i==1&&j==1)
+				{
+					torre[i][j]=0; //si estamos al inicio
+				}
+				else {
+					Portales portalEnd= contenedor.get(portales.getPortal(i,j));
+					if(portalEnd!=null)
+					{
+						torre[portalEnd.getX()][portalEnd.getY()]=torre[i][j]; //si torre[i][j] es un portal de inicio
+					}
+					else 
+					{
+						if(j==1) //en la esquina de la izquieda
+						{
+							torre[i][j+1]=Integer.min(torre[i][j]+energia.get(i), torre[i][j+1]);
+						}
+						else if(j==cuartos) //en la esquina de la derecha
+						{
+							torre[i][j-1]=Integer.min(torre[i][j]+energia.get(i), torre[i][j-1]);
+						}
+						else {//toca revisar si es mas barato de derecha a izquierda o al revez
+							torre[i][j-1]=Integer.min(torre[i][j]+energia.get(i), torre[i][j-1]);
+							torre[i][j+1]=Integer.min(torre[i][j]+energia.get(i), torre[i][j+1]);
+						}
+					}
+				}
+				
+			}
+		}		
+		return torre[pisos][cuartos];
 	}
 
 }

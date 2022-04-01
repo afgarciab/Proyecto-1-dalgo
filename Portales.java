@@ -32,5 +32,13 @@ public class Portales {
 		this.y = y;
 	}
 	
+	public Portales getPortal(int x, int y)
+	{
+		if(x==this.x&&y==this.y) {
+		return this;
+		}
+		else
+			return null;
+	}
 	
 }
