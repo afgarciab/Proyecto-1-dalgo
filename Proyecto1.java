@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 
-/**
- * 
- */
 
 /**
- * @author af.garciab
+ * @author andres felipe garcia bernal
+ * @author yei hong 
  *
  */
 public class Proyecto1 {
@@ -42,7 +40,6 @@ public class Proyecto1 {
 				InputStreamReader is= new InputStreamReader(System.in);
 				BufferedReader br = new BufferedReader(is);
 				) { 
-			System.out.println("aqui llegue");
 			String line = br.readLine();
 			int casos = Integer.parseInt(line);
 			line = br.readLine();
@@ -81,11 +78,7 @@ public class Proyecto1 {
 			}			
 		}
 
-		//debo hacer la carga de datos.
-		//luego se pone la funcion inicializarTablaCostosEnergia con su parametro.
-		//luego se pone la funcion inicializarPortales con su parametro.
-		//luego se pone la funcion inicializarTorre.
-		//luego se pone la funcion calcularComplejidad.
+
 	}
 	/**
 	 * 
@@ -145,8 +138,6 @@ public class Proyecto1 {
 	 */
 	public int calcularComplejidad( String[] PT )
 	{
-		
-		
 		for (int i =0; i<pisos;i++)
 		{
 			for (int j=0; j<cuartos;j++)
@@ -157,31 +148,31 @@ public class Proyecto1 {
 				}
 				else {
 
-						if(j==0) //en la esquina de la izquieda
-						{
-							torre[i][j]=Integer.min(torre[i][j+1]+energia.get(i), torre[i][j]);
-						}
-						else if(j==cuartos-1) //en la esquina de la derecha
-						{
-							torre[i][j]=Integer.min(torre[i][j-1]+energia.get(i), torre[i][j]);
-						}
-						else {//toca revisar si es mas barato de derecha a izquierda o al revez
-							torre[i][j]=Integer.min(torre[i][j-1]+energia.get(i), torre[i][j]);
-							torre[i][j]=Integer.min(torre[i][j+1]+energia.get(i), torre[i][j]);
-						}
-						for (int k=0;k<portales.size();k++) {
-							Portales a = portales.get(k);
-							if(a.getX()==i&&a.getY()==j) {
+					if(j==0) //en la esquina de la izquieda
+					{
+						torre[i][j]=Integer.min(torre[i][j+1]+energia.get(i), torre[i][j]);
+					}
+					else if(j==cuartos-1) //en la esquina de la derecha
+					{
+						torre[i][j]=Integer.min(torre[i][j-1]+energia.get(i), torre[i][j]);
+					}
+					else {//toca revisar si es mas barato de derecha a izquierda o al revez
+						torre[i][j]=Integer.min(torre[i][j-1]+energia.get(i), torre[i][j]);
+						torre[i][j]=Integer.min(torre[i][j+1]+energia.get(i), torre[i][j]);
+					}
+					for (int k=0;k<portales.size();k++) {
+						Portales a = portales.get(k);
+						if(a.getX()==i&&a.getY()==j) {
 							Portales portalEnd= contenedor.get(a);
 							torre[portalEnd.getX()][portalEnd.getY()]=torre[i][j];
 							portales.remove(k);
-							}
 						}
 					}
 				}
-				
 			}
-		
+
+		}
+
 		return torre[pisos-1][cuartos-1];
 	}
 

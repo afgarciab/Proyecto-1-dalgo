@@ -1,4 +1,9 @@
 
+/**
+ * @author andres felipe garcia bernal
+ * @author yei hong 
+ *
+ */
 public class Portales {
 
 	/**
@@ -35,14 +40,14 @@ public class Portales {
 	{
 		if(x==this.x&&y==this.y) {
 			return true;
-			}
-			else
-				return false;
+		}
+		else
+			return false;
 	}
-	
+
 	public Portales getPortal()
 	{
 		return this;
 	}
-	
+
 }
