@@ -31,14 +31,18 @@ public class Portales {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
-	public Portales getPortal(int x, int y)
+	public boolean esPortal(int x, int y)
 	{
 		if(x==this.x&&y==this.y) {
+			return true;
+			}
+			else
+				return false;
+	}
+	
+	public Portales getPortal()
+	{
 		return this;
-		}
-		else
-			return null;
 	}
 	
 }
